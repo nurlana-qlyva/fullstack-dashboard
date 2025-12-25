@@ -13,14 +13,14 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function login(email, password) {
-    const { data } = await api.post("/login", { email, password });
+    const { data } = await api.post("/auth/login", { email, password });
     setAccessToken(data.accessToken);
     setUser(data.user);
     return data.user;
   }
 
   async function logout() {
-    try { await api.post("/logout"); } catch { }
+    try { await api.post("/auth/logout"); } catch { }
     setAccessToken(null);
     setUser(null);
   }
@@ -29,7 +29,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await api.post("/refresh");
+        const { data } = await api.post("/auth/refresh");
         setAccessToken(data.accessToken);
       } catch { }
       setReady(true);
